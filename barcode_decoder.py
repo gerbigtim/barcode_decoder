@@ -32,6 +32,7 @@ class Decoder():
         barcode_dict = this._split_barcode(barcode)
         item_dict = {}
         for key, code in barcode_dict.items():
-            item_dict[key] = this.df.loc[this.df[key+'Code'] == code][key].values[0]
+            codes_idx = this.df.columns.get_indexer(key) + 1
+            item_dict[key] = this.df.loc[this.df.iloc[:, codes_idx] == code][key].values[0]
         item_dict['Farbe'] = barcode[8:]
         return item_dict

@@ -34,7 +34,7 @@ class Decoder:
         if len(barcode) != 14:
             raise ValueError("Barcode must be of length 14!")
         if not all(c in string.hexdigits for c in barcode):
-            raise ValueError('Barcode contains non hex digits!')
+            raise ValueError(f'Barcode {barcode} contains non hex digits!')
         barcode = barcode.lower()
 
         barcode_dict = this._split_barcode(barcode)
@@ -49,13 +49,22 @@ class Decoder:
     def encode(this, item_dict):
         """Encode dictionary into barcode."""
         if not collections.Counter(item_dict.keys()) == collections.Counter(this._keys):
-            raise ValueError("Dictionary contains wrong keys.")
+            raise ValueError("Dictionary contains wrong keys!")
         if not all(c in string.hexdigits for c in item_dict[this._color]):
-            raise ValueError('Color contains non hex digits!')
+            raise ValueError(f'Color {item_dict[this._color]} contains non hex digits!')
         barcode = ''
         for key in this._keys[:-1]:
             value = item_dict[key]
             idx = this.df.columns.get_indexer([key]) + 1
-            barcode += this.df.loc[this.df[key] == value].iloc[:, idx].values[0][0]
+            try:
+                barcode += this.df.loc[this.df[key] == value].iloc[:, idx].values[0][0]
+            except IndexError:
+                raise ItemNotFoundError(f'Item {value} not found in column {key}!')
         barcode += item_dict[this._color].lower()
         return barcode
+
+
+class ItemNotFoundError(Exception):
+    """Throw this if item is not found in dataframe."""
+
+    pass

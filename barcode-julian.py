@@ -1,14 +1,10 @@
 """Module for reading barcodes."""
 import pandas as pd
+import string
 
 
 def split_barcode(barcode):
     """Split the barcode into a dictionary."""
-    if not isinstance(barcode, str):
-        raise TypeError("Barcode must be passed as a string!")
-    if len(barcode) != 14:
-        raise ValueError("Barcode must be of length 14!")
-
     barcode_dict = {}
     barcode_dict['Marke'] = barcode[:2]
     barcode_dict['Art'] = barcode[2:4]
@@ -19,6 +15,14 @@ def split_barcode(barcode):
 
 def decode_barcode(barcode, df):
     """Decode the barcode."""
+    if not isinstance(barcode, str):
+        raise TypeError("Barcode must be passed as a string!")
+    if len(barcode) != 14:
+        raise ValueError("Barcode must be of length 14!")
+    if not all(c in string.hexdigits for c in barcode):
+        raise ValueError('Barcode contains non hex digits!')
+    barcode = barcode.lower()
+
     barcode_dict = split_barcode(barcode)
     item_dict = {}
     for key, code in barcode_dict.items():
@@ -30,7 +34,7 @@ def decode_barcode(barcode, df):
 def main():
     """Execute the main function."""
     df = pd.read_csv('DecodeSheet.csv')
-    print(decode_barcode('00010203ffffff', df))
+    print(decode_barcode('00010203FFgFFF', df))
 
 
 if __name__ == '__main__':

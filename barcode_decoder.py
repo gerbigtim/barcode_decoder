@@ -1,5 +1,6 @@
 """Module for reading barcodes."""
 import pandas as pd
+import numpy as np
 import string
 import collections
 
@@ -46,6 +47,10 @@ class Decoder:
                 item_dict[key] = this.df.loc[mask][key].values[0]
             except IndexError:
                 raise ItemNotFoundError(f'Code "{code}" not found for "{key}"!')
+            try:
+                assert isinstance(item_dict[key], str)
+            except AssertionError:
+                raise ItemNotFoundError(f'No item found in column "{key}" for code "{code}"!')
         item_dict[this._color] = barcode[8:]
         return item_dict
 

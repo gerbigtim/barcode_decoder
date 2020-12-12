@@ -42,7 +42,10 @@ class Decoder:
         for key, code in barcode_dict.items():
             idx = this.df.columns.get_indexer([key]) + 1
             mask = (this.df.iloc[:, idx] == code).iloc[:, 0]
-            item_dict[key] = this.df.loc[mask][key].values[0]
+            try:
+                item_dict[key] = this.df.loc[mask][key].values[0]
+            except IndexError:
+                raise ItemNotFoundError(f'Code {code} not found for {key}!')
         item_dict[this._color] = barcode[8:]
         return item_dict
 

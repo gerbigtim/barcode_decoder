@@ -10,7 +10,7 @@ class Decoder:
 
     def __init__(this, csv_file):
         """Construct the class."""
-        this.df = pd.read_csv(csv_file)
+        this.df = pd.read_csv(csv_file, dtype=str)
         this._color = 'Farbe'
         this._keys = this._get_keys()
 
@@ -67,7 +67,9 @@ class Decoder:
             try:
                 barcode += this.df.loc[this.df[key] == value].iloc[:, idx].values[0][0]
             except IndexError:
-                raise ItemNotFoundError(f'Item "{value}" not found in column "{key}"!')
+                raise ItemNotFoundError(f'Item "{key}:{value}" not found!')
+            except TypeError:
+                raise ItemNotFoundError(f'No code found for item "{key}:{value}"!')
         barcode += item_dict[this._color].lower()
         return barcode
 

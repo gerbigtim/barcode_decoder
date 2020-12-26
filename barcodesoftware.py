@@ -1,53 +1,114 @@
 import barcode_decoder as bc  
 from tkinter import *
 
-class Display:
-    def __init__(self):
-        self.root = Tk()
-        self.root.title("Jean Maroe Decoder")
+LARGE_FONT= ("Verdana", 12)
 
-        #Create Widgets
-        self.btn1 = Button(self.root, text = "Code anzeigen", command=lambda:self.onClick(1))
-        
-        self.entry_1_txt = StringVar()
-        self.entry = Entry(self.root, width=14, text = self.entry_1_txt)
+class SeaofBTCapp(Tk):
 
-        self.label_1 = Label(self.root, text = "")
+    def __init__(self, *args, **kwargs):
         
-        self.entry.pack()
-        self.btn1.pack()
-        self.label_1.pack()
-        
-        self.root.mainloop()
+        Tk.__init__(self, *args, **kwargs)
+        container = Frame(self)
+
+        container.pack(side="top", fill="both", expand = True)
+
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+        for F in (StartPage, PageOne, PageTwo):
+
+            frame = F(container, self)
+
+            self.frames[F] = frame
+
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+
+        frame = self.frames[cont]
+        frame.tkraise()
+
 
     def onClick(self, args):
         if args == 1:
-            print(self.entry_1_txt.get())
-            self.dec = bc.Decoder('DecodeSheet.txt')
-            self.barcode = self.entry_1_txt.get()
-            self.dec_barcode = self.dec.decode(self.barcode)
-            self.label_1.configure(text = self.dec_barcode)
-            print(self.dec_barcode)
+            #print(self.entry_1_txt.get())
+            dec = bc.Decoder('DecodeSheet.txt')
+            barcode = entry_1_txt.get()
+            dec_barcode = dec.decode(barcode)
+            self.label_1.configure(text = dec_barcode)
+            #print(self.dec_barcode)
         if args == 2:
             print("button 2 clicked")
 
+    
 
-    # def Decoding(self):
-    #     self.dec = bc.Decoder('DecodeSheet.csv')
-    #     self.barcode = self.entry_1_txt.get()
-    #     self.dec_barcode = self.dec.decode(self.barcode)
-    #     return self.dec_barcode
+class StartPage(Frame):
 
-# class App:
-      
-#     while True:     
-#         barcode  = input('Barcode : ')     
-#         if barcode.startswith('q'):         
-#             break     
-#         print(dec.decode(barcode))
+    def __init__(self, parent, controller):
+        Frame.__init__(self,parent)
+        label = Label(self, text="Start Page", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
 
-# root = Tk()
-# app = App(root)
-# root.mainloop()
+        button = Button(self, text="Visit Page 1",
+                            command=lambda: controller.show_frame(PageOne))
+        button.pack()
 
-display = Display()
+        button2 = Button(self, text="Visit Page 2",
+                            command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+
+class PageOne(Frame):
+
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        label = Label(self, text="Page One!!!", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1 = Button(self, text="Back to Home",
+                            command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+
+        button2 = Button(self, text="Page Two",
+                            command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+
+
+        btn1 = Button(self, text = "Code anzeigen", command=lambda: controller.onClick(1))
+        
+        entry_1_txt = StringVar()
+        entry = Entry(self, width=14, text = entry_1_txt)
+
+        label_1 = Label(self, text = "")
+        
+        entry.pack()
+        btn1.pack()
+        label_1.pack()
+
+
+
+class PageTwo(Frame):
+
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        label = Label(self, text="Page Two!!!", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1 = Button(self, text="Back to Home",
+                            command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+
+        button2 = Button(self, text="Page One",
+                            command=lambda: controller.show_frame(PageOne))
+        button2.pack()
+
+
+
+app = SeaofBTCapp()
+app.title("Jean Maroe Decoder")
+app.mainloop()

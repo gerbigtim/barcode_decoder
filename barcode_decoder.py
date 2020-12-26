@@ -1,6 +1,5 @@
 """Module for reading barcodes."""
 import pandas as pd
-import numpy as np
 import string
 import collections
 

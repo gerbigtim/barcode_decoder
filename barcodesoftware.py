@@ -35,16 +35,20 @@ class SeaofBTCapp(Tk):
 
     def onClick(self, args):
         if args == 1:
-            #print(self.entry_1_txt.get())
-            dec = bc.Decoder('DecodeSheet.txt')
-            barcode = entry_1_txt.get()
-            dec_barcode = dec.decode(barcode)
-            self.label_1.configure(text = dec_barcode)
-            #print(self.dec_barcode)
-        if args == 2:
-            print("button 2 clicked")
+            print("test")
+            # Label allgemein ändern wäre hier cool
 
-    
+            #a = self.bc_encoded
+
+            #barcode = entry_1_txt.get()
+            #dec_barcode = dec.decode(barcode)
+            #self.label_1.configure(text = dec_barcode)
+            #print(self.dec_barcode)
+            #dec = bc.Decoder('DecodeSheet.txt')
+        
+        #if args == 2:
+        #    print("button 2 clicked")
+        #return self.label_1
 
 class StartPage(Frame):
 
@@ -61,7 +65,6 @@ class StartPage(Frame):
                             command=lambda: controller.show_frame(PageTwo))
         button2.pack()
 
-
 class PageOne(Frame):
 
     def __init__(self, parent, controller):
@@ -77,18 +80,22 @@ class PageOne(Frame):
                             command=lambda: controller.show_frame(PageTwo))
         button2.pack()
 
-
-
-        btn1 = Button(self, text = "Code anzeigen", command=lambda: controller.onClick(1))
+        btn1 = Button(self, text = "Code anzeigen", 
+                            command=lambda: controller.onClick(1))
         
-        entry_1_txt = StringVar()
-        entry = Entry(self, width=14, text = entry_1_txt)
-
-        label_1 = Label(self, text = "")
+        
+        entry = Entry(self, width=14)
+        self.label_1 = Label(self, text = "")
         
         entry.pack()
         btn1.pack()
-        label_1.pack()
+        self.label_1.pack()
+        #self.label_1.configure(text=SeaofBTCapp.onClick.label_label)
+
+    #    pass
+    #     bc_encoded = StringVar()
+    #     bc = entry.get()
+    #     return bc_encoded
 
 
 

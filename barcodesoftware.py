@@ -3,6 +3,7 @@ from tkinter import *
 
 LARGE_FONT= ("Verdana", 12)
 
+
 class SeaofBTCapp(Tk):
 
     def __init__(self, *args, **kwargs):
@@ -32,13 +33,20 @@ class SeaofBTCapp(Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
+    def get_page_instance(self, pagename):
+        return self.frames[pagename]
 
     def onClick(self, args):
         if args == 1:
             print("test")
             # Label allgemein ändern wäre hier cool
 
-            #a = self.bc_encoded
+
+        PageOne.change_label(self.get_page_instance(PageOne), "HI JULIAN")
+
+
+
+            #PageOne.__init__.label_1.configure(text= "test2")
 
             #barcode = entry_1_txt.get()
             #dec_barcode = dec.decode(barcode)
@@ -85,12 +93,17 @@ class PageOne(Frame):
         
         
         entry = Entry(self, width=14)
-        self.label_1 = Label(self, text = "")
+        self.label_1 = Label(self, text = "HUHU")
         
         entry.pack()
         btn1.pack()
         self.label_1.pack()
         #self.label_1.configure(text=SeaofBTCapp.onClick.label_label)
+
+
+    def change_label(self, text="testtest"):
+        self.label_1.configure(text=text)
+
 
     #    pass
     #     bc_encoded = StringVar()

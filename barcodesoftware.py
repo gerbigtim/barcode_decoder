@@ -38,17 +38,14 @@ class SeaofBTCapp(Tk):
 
     def onClick(self, args):
         if args == 1:
-            print("test")
-
             dec = bc.Decoder('DecodeSheet.txt')
             barcode = self.get_page_instance(PageOne).entry_1.get()
             dec_barcode = dec.decode(barcode)
-
+            #label change @ pageOne/change_label
             PageOne.change_label(self.get_page_instance(PageOne), dec_barcode)
         
-        #if args == 2:
-        #    print("button 2 clicked")
-
+        if args == 2:
+            print("button 2 clicked")
 
 class StartPage(Frame):
 
@@ -87,22 +84,14 @@ class PageOne(Frame):
         entry = Entry(self, width=14, text = self.entry_1)
         
 
-        self.label_1 = Label(self, text = "HUHU")
+        self.label_1 = Label(self, text = "")
         
         entry.pack()
         btn1.pack()
         self.label_1.pack()
-        #self.label_1.configure(text=SeaofBTCapp.onClick.label_label)
 
-
-    def change_label(self, text):#="testtest"):
+    def change_label(self, text):
         self.label_1.configure(text=text)
-
-
-    #    pass
-    #     bc_encoded = StringVar()
-    #     bc = entry.get()
-    #     return bc_encoded
 
 
 

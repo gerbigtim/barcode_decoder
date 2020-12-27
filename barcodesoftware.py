@@ -39,24 +39,16 @@ class SeaofBTCapp(Tk):
     def onClick(self, args):
         if args == 1:
             print("test")
-            # Label allgemein ändern wäre hier cool
 
+            dec = bc.Decoder('DecodeSheet.txt')
+            barcode = self.get_page_instance(PageOne).entry_1.get()
+            dec_barcode = dec.decode(barcode)
 
-        PageOne.change_label(self.get_page_instance(PageOne), "HI JULIAN")
-
-
-
-            #PageOne.__init__.label_1.configure(text= "test2")
-
-            #barcode = entry_1_txt.get()
-            #dec_barcode = dec.decode(barcode)
-            #self.label_1.configure(text = dec_barcode)
-            #print(self.dec_barcode)
-            #dec = bc.Decoder('DecodeSheet.txt')
+            PageOne.change_label(self.get_page_instance(PageOne), dec_barcode)
         
         #if args == 2:
         #    print("button 2 clicked")
-        #return self.label_1
+
 
 class StartPage(Frame):
 
@@ -91,8 +83,10 @@ class PageOne(Frame):
         btn1 = Button(self, text = "Code anzeigen", 
                             command=lambda: controller.onClick(1))
         
+        self.entry_1 = StringVar()
+        entry = Entry(self, width=14, text = self.entry_1)
         
-        entry = Entry(self, width=14)
+
         self.label_1 = Label(self, text = "HUHU")
         
         entry.pack()
@@ -101,7 +95,7 @@ class PageOne(Frame):
         #self.label_1.configure(text=SeaofBTCapp.onClick.label_label)
 
 
-    def change_label(self, text="testtest"):
+    def change_label(self, text):#="testtest"):
         self.label_1.configure(text=text)
 
 
